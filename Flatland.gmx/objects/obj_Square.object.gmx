@@ -128,7 +128,7 @@ Angles[Angle,1] = 1
 
 ID = instance_nearest(x,y,obj_Equilateral)
 ID2 = instance_nearest(x,y,obj_Isoscolese)
-if point_distance(x, y, ID.x, ID.y) &gt; 140 and point_distance(x, y, ID2.x, ID2.y) &gt; 140 {exit}
+if point_distance(x, y, ID.x, ID.y) &gt; 560 and point_distance(x, y, ID2.x, ID2.y) &gt; 560 {exit}
 
 
 
