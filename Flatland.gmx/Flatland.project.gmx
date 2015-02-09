@@ -29,10 +29,11 @@
   </objects>
   <rooms name="rooms">
     <room>rooms\room0</room>
+    <room>rooms\room1</room>
   </rooms>
   <constants number="2">
-    <constant name="GM_build_date">42042.1318608333</constant>
-    <constant name="GM_version">'1.0.0.3'</constant>
+    <constant name="GM_build_date">42044.4051264236</constant>
+    <constant name="GM_version">'1.0.0.1'</constant>
   </constants>
   <help>
     <rtf>help.rtf</rtf>
