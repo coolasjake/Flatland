@@ -34,7 +34,7 @@ foolean = 0
 no_collision = 1
 spd = 1
 c_count = 2
-max_vision = 800
+max_vision = 100
 </string>
           </argument>
         </arguments>
@@ -62,9 +62,9 @@ max_vision = 800
 A = degtorad(dir)
 if keyboard_check(vk_left) and keyboard_check(vk_rcontrol)
 {
-    if !place_meeting(x+sin(A)*-(2*spd),y-cos(A)*-(2*spd),obj_Equilateral) and !place_meeting(x+sin(A)*-(2*spd),y-cos(A)*-(2*spd),obj_Isoscolese) 
+    if !place_meeting(x+sin(A)*-(2*spd),y+cos(A)*-(2*spd),obj_Equilateral) and !place_meeting(x+sin(A)*-(2*spd),y+cos(A)*-(2*spd),obj_Isoscolese) 
     {
-        y-= cos(A)*-(2*spd)
+        y+= cos(A)*-(2*spd)
         x+= sin(A)*-(2*spd)
     }
 }
@@ -80,9 +80,9 @@ else if keyboard_check(vk_left)
 A = degtorad(dir)
 if keyboard_check(vk_right) and keyboard_check(vk_rcontrol)
 {
-    if !place_meeting(x+sin(A)*(2*spd),y-cos(A)*(2*spd),obj_Equilateral) and !place_meeting(x+sin(A)*(2*spd),y-cos(A)*(2*spd),obj_Isoscolese)
+    if !place_meeting(x+sin(A)*(2*spd),y+cos(A)*(2*spd),obj_Equilateral) and !place_meeting(x+sin(A)*(2*spd),y+cos(A)*(2*spd),obj_Isoscolese)
     {
-        y-= cos(A)*(2*spd)
+        y+= cos(A)*(2*spd)
         x+= sin(A)*(2*spd)
     }
 }
@@ -114,6 +114,7 @@ else if keyboard_check(vk_down)
     }
 }
 
+image_angle = dir
 
 //Start of rendering
 //if c_count &lt; 2 {c_count += 1}
@@ -305,7 +306,8 @@ draw_rectangle(368,(room_height/2)+1,352,(room_height/2)-1, 0)
           <argument>
             <kind>1</kind>
             <string>///The rest of the code.
-draw_sprite_ext(spr_square,0,x,y,1,1,dir,c_white,1)
+draw_self()
+//draw_sprite_ext(spr_square,0,x,y,1,1,dir,c_white,1)
 
 /*
 for (Angle=0; Angle&lt;360; Angle+=1)
