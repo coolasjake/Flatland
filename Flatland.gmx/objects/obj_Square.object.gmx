@@ -34,7 +34,21 @@ foolean = 0
 no_collision = 1
 spd = 1
 c_count = 2
-max_vision = 100
+max_vision = 300
+
+C_pink = 210
+C_purple = 185
+C_blue = 160
+C_lblue = 120
+C_green = 90
+C_yellow = 40
+C_orange = 20
+C_red = 0
+
+GrayOnly = false
+
+if GrayOnly = true {sat = 0}
+else {sat = 240}
 </string>
           </argument>
         </arguments>
@@ -117,21 +131,18 @@ else if keyboard_check(vk_down)
 image_angle = dir
 
 //Start of rendering
-//if c_count &lt; 2 {c_count += 1}
-//else
-//{
 Distance = 1
 Angle = 0
 for (Angle=0; Angle&lt;=360; Angle+=1)
 {
-Angles[Angle,0] = 0
-Angles[Angle,1] = 1
+Angles[Angle] = 0
 }
 
-ID = instance_nearest(x,y,obj_Equilateral)
-ID2 = instance_nearest(x,y,obj_Isoscolese)
-if point_distance(x, y, ID.x, ID.y) &gt; max_vision+50 and point_distance(x, y, ID2.x, ID2.y) &gt; max_vision+50 {exit}
-
+ID = instance_nearest(x,y,all)
+//ID = instance_nearest(x,y,obj_Equilateral)
+//ID2 = instance_nearest(x,y,obj_Isoscolese)
+//if point_distance(x, y, ID.x, ID.y) &gt; max_vision+50 and point_distance(x, y, ID2.x, ID2.y) &gt; max_vision+50 {exit}
+if point_distance(x, y, ID.x, ID.y) &gt; max_vision+50
 
 no_collision = 1
 //Start of Efficient block. !?!?!?!?!?!?!?!?!?!
@@ -140,68 +151,33 @@ for (Angle=strafe; Angle&lt;=(360); Angle+=16)
     A = degtorad(dir-45+(Angle/4))
     if collision_line(x,y,x+cos(A)*max_vision,y-sin(A)*max_vision,all,0,1)
     {
-        for (Distance=1; Distance&lt;=max_vision; Distance+=8)
+        foolean = 2
+    }
+    if foolean &gt; 0 and Angle &gt;= 16
+    {
+        for (Detail_Angle=(Angle-12); Detail_Angle&lt;=Angle; Detail_Angle+=4)
         {
-            A = degtorad(dir-45+(Angle/4))
-            
-            if Angles[Angle,0] = 0
+            if Angles[Detail_Angle] = 0
             {
-                Angles[Angle,0] = scr_Check_Collisions(x,y,A,Distance)
-                if !Angles[Angle,0] = 0 
-                {
-                Angles[Angle,1] = Distance
-                foolean = 2
-                no_collision = 0
-                }
-            }
-        }
-        
-        if foolean &gt; 0 and Angle &gt;= 16
-        {
-            for (Detail_Angle=(Angle-16); Detail_Angle&lt;Angle; Detail_Angle+=4)
-            {
+                A = degtorad(dir-45+(Detail_Angle/4))
                 for (Distance=1; Distance&lt;=max_vision; Distance+=2)
                 {
-                    A = degtorad(dir-45+(Detail_Angle/4))
-                    
-                    if Angles[Detail_Angle,0] = 0
+                    if collision_point(x+cos(A)*Distance,y-sin(A)*Distance,all,1,1)
                     {
-                        Angles[Detail_Angle,0] = scr_Check_Collisions(x,y,A,Distance)
-                        if !Angles[Detail_Angle,0] = 0 
-                        {
-                            Angles[Detail_Angle,1] = Distance
-                            foolean = 2
-                            no_collision = 0
-                        }
+                        Angles[Detail_Angle] = Distance
+                        foolean = 2
+                        no_collision = 0
+                        break
                     }
                 }
             }
-            foolean -= 1
         }
+        foolean -= 1
     }
 }
 //if strafe = 15 and no_collision = 1 {strafe = 0}
 //else if no_collision = 1 {strafe += 1}
 //End of Efficient block. !?!?!?!?!?!?!?!?!?!
-
-//c_count = 0
-//}
-
-
-/*
-if a &gt; 135
-{
-a = 45
-if d &gt; 99 {d = 50}
-else {d += 1}
-}
-else {a += 1}
-
-A = degtorad(a)
-
-obj_Equilateral.y = y-sin(A)*d
-obj_Equilateral.x = x+cos(A)*d+16
-*/
 </string>
           </argument>
         </arguments>
@@ -227,47 +203,49 @@ obj_Equilateral.x = x+cos(A)*d+16
             <string>///The rest of the code.
 //draw_sprite_ext(spr_square,0,x,y,1,1,dir,c_white,1)
 
+
 for (Angle=0; Angle&lt;360; Angle+=1)
 {
-
+    if Angles[Angle] &lt;= 0 {}
+    /*
     draw_set_colour(c_white)
-    if Angles[Angle,0] = 0 {}
-    /*{
-        //draw_rectangle_colour(Angle*2,0,Angle*2+4,room_height, col1, col2, col3, col4, outline)
-        draw_set_colour(c_white)
-        draw_set_alpha((100-Angles[Angle,1])/100)
-        //draw_line(Angle*2,0,Angle*2+4,room_height)
-        draw_rectangle(Angle*2,0,Angle*2+4,room_height,0)
-    }*/
     else if Angles[Angle,0] = 1
     {
-        draw_set_colour(c_black)
+        col = make_color_hsv(C_blue, sat, 0)
         draw_set_alpha((max_vision-Angles[Angle,1])/max_vision)
+        draw_set_colour(col)
         //draw_line(Angle*2,0,Angle*2+4,room_height)
         draw_rectangle((360-Angle)*2,0,(360-Angle)*2+7,room_height,0)
     }
     else if Angles[Angle,0] = 2
     {
-        draw_set_colour(c_aqua)
+        col = make_color_hsv(C_blue, sat, ((max_vision-Angles[Angle,1])/max_vision)*2.55)
         draw_set_alpha((max_vision-Angles[Angle,1])/max_vision)
+        draw_set_colour(col)
         //draw_line(Angle*2,0,Angle*2+4,room_height)
         draw_rectangle((360-Angle)*2,0,(360-Angle)*2+7,room_height,0)
     }
     else if Angles[Angle,0] = 3
     {
-        draw_set_colour(c_blue)
+        col = make_color_hsv(C_lblue, sat, ((max_vision-Angles[Angle,1])/max_vision)*2.55)
         draw_set_alpha((max_vision-Angles[Angle,1])/max_vision)
+        draw_set_colour(col)
         //draw_line(Angle*2,0,Angle*2+4,room_height)
         draw_rectangle((360-Angle)*2,0,(360-Angle)*2+7,room_height,0)
     }
     else if Angles[Angle,0] = 4
+    {*/
+    else
     {
-        draw_set_colour(c_red)
-        draw_set_alpha((max_vision-Angles[Angle,1])/max_vision)
+        col = make_color_hsv(C_blue, sat, ((max_vision-Angles[Angle])/max_vision)*2.55)
+        draw_set_alpha((max_vision-Angles[Angle])/max_vision)
+        draw_set_colour(col)
         //draw_line(Angle*2,0,Angle*2+4,room_height)
         draw_rectangle((360-Angle)*2,0,(360-Angle)*2+7,room_height,0)
     }
+    //}
 }
+
 
 /*
 draw_set_colour(c_orange)
